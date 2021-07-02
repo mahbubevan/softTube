@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
         'vendor' => \App\Http\Middleware\RedirectIfNotVendor::class,
         'vendor.guest' => \App\Http\Middleware\RedirectIfVendor::class,
 
-        'userVerify' => \App\Http\Middleware\userStatus::class
+        'userVerify' => \App\Http\Middleware\userStatus::class,
+        'isUserSubscribed' => \App\Http\Middleware\checkUserSubscription::class
     ];
 }

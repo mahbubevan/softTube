@@ -202,7 +202,9 @@ Route::prefix('user')->name('user.')->group(function () {
             Route::get('/plans',[PurchaseController::class,'plan'])->name('plan');
             Route::get('/plan-purchase/{plan}',[PurchaseController::class,'purchase'])->name('purchase.plan');
             // Upload Routes 
-            Route::get('/upload',[UploadController::class,'upload'])->name('upload');
+            Route::middleware('isUserSubscribed')->group(function(){
+                Route::get('/upload',[UploadController::class,'upload'])->name('upload');
+            });
 
         });
 

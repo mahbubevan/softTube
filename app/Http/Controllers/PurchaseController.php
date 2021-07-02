@@ -14,7 +14,12 @@ class PurchaseController extends Controller
     {
         $plans = Plan::where('status',Plan::ACTIVE)->get();
         $user = User::where('id',Auth::id())->first();
-        $stripe_price = $user->subscriptions[0]->stripe_price;
+        
+        if ($user->subscriptions->isNotEmpty()) {
+            $stripe_price = $user->subscriptions[0]->stripe_price;
+        }else{
+            $stripe_price = 'not available';
+        }
         
         return view('user.purchase.plan',compact('plans','stripe_price'));
     }
@@ -30,7 +35,7 @@ class PurchaseController extends Controller
                 $existingPlan = Plan::where('stripe_price',$user->subscriptions[0]->stripe_price)->first();
                 $user->subscription($existingPlan->name)->swap($plan->stripe_price);
             
-            return redirect()->route('user.index')->with('success','Successfully Subscribed');
+                return redirect()->route('user.index')->with('success','Successfully Upgraded');
             }
 
             $user->newSubscription($plan->name,$plan->stripe_price)->add();
@@ -38,6 +43,6 @@ class PurchaseController extends Controller
             return redirect()->route('user.index')->with('success','Successfully Subscribed');
         }
 
-        return redirect()->route('user.deposit.selector');
+        return redirect()->route('user.deposit.selector')->with('info','Please update your credit card information');
     }
 }
