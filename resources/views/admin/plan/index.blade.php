@@ -69,11 +69,11 @@
                             @endif
                         </td>
                         <td>
-                            @if ($item->Withdrawal_type==\App\Models\Plan::DAILY)
+                            @if ($item->withdrawal_type==\App\Models\Plan::DAILY)
                                 <span class="badge bg-blue-500 text-white"> @lang('DAILY') </span>
-                            @elseif ($item->Withdrawal_type==\App\Models\Plan::WEEKLY)
+                            @elseif ($item->withdrawal_type==\App\Models\Plan::WEEKLY)
                                 <span class="badge bg-green-500 text-white"> @lang('WEEKLY') </span>
-                            @elseif ($item->Withdrawal_type==\App\Models\Plan::MONTHLY)
+                            @elseif ($item->withdrawal_type==\App\Models\Plan::MONTHLY)
                                 <span class="badge bg-green-500 text-white"> @lang('MONTHLY') </span>
                             @else
                                 <span class="badge bg-pink-500 text-white"> @lang('YEARLY') </span>
@@ -85,6 +85,19 @@
                                     <i class="las la-pen"></i>
                                 </a>
                             </span>
+                            @if ($item->status == \App\Models\Plan::ACTIVE)
+                                <span data-toggle="tooltip" data-original-title="@lang('Deactive')">
+                                    <a class="btn btn-sm bg-yellow-500 hover:bg-yellow-600 text-white" href="{{route('admin.plan.deactive',$item->id)}}">
+                                        <i class="las la-ban"></i>
+                                    </a>
+                                </span>
+                            @else 
+                                <span data-toggle="tooltip" data-original-title="@lang('Active')">
+                                    <a class="btn btn-sm bg-indigo-500 hover:bg-indigo-600 text-white" href="{{route('admin.plan.active',$item->id)}}">
+                                        <i class="las la-check-circle"></i>
+                                    </a>
+                                </span>
+                            @endif
                         </td>
                     </tr>
                     @empty

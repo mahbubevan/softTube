@@ -13,7 +13,8 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthorizeController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\Vendor\Auth\ForgotPasswordController as VendorForgotPasswordController;
 use App\Http\Controllers\Vendor\Auth\LoginController as VendorLoginController;
 use App\Http\Controllers\Vendor\Auth\ResetPasswordController as VendorResetPasswordController;
@@ -127,6 +128,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('store',[PlanController::class,'store'])->name('store');
             Route::get('edit/{plan}',[PlanController::class,'edit'])->name('edit');
             Route::post('update/{plan}',[PlanController::class,'update'])->name('update');
+
+            Route::get('active/{plan}',[PlanController::class,'active'])->name('active');
+            Route::get('deactive/{plan}',[PlanController::class,'deactive'])->name('deactive');
         });
 
     });
@@ -193,6 +197,12 @@ Route::prefix('user')->name('user.')->group(function () {
             Route::get('billing-portal', function (Request $request) {
                 return $request->user()->redirectToBillingPortal();
             });
+
+            //Plan Routes
+            Route::get('/plans',[PurchaseController::class,'plan'])->name('plan');
+            // Upload Routes 
+            Route::get('/upload',[UploadController::class,'upload'])->name('upload');
+
         });
 
     });

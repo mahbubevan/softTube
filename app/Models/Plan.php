@@ -23,4 +23,7 @@ class Plan extends Model
 
     const LOCAL = 0;
     const AWS = 1;
+
+    const DEACTIVE = 0;
+    const ACTIVE = 1;
 }

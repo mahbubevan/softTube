@@ -46,6 +46,8 @@
                       <li><a class="dropdown-item" href="{{route('user.deposit.set.amount')}}">{{__('Deposit Now')}}</a></li>
                       <li><a class="dropdown-item" href="{{route('user.deposit.history')}}">{{__('Deposit History')}}</a></li>
                       <li><a class="dropdown-item" href="{{route('user.deposit.selector')}}">{{__('Update Your Payment Info')}}</a></li>
+                      <li><a class="dropdown-item" href="{{route('user.upload')}}">{{__('Upload Videos')}}</a></li>
+                      <li><a class="dropdown-item" href="{{route('user.plan')}}">{{__('Plans')}}</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li>
                         <form action="{{route('logout')}}" method="post">
