@@ -17,7 +17,7 @@ class CreatePlansTable extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('stripe_prod_id');
+            $table->string('stripe_price');
             $table->decimal('price',18,8);
             $table->decimal('storage',18,8);
             $table->boolean('storage_unit')->default(Plan::GB);

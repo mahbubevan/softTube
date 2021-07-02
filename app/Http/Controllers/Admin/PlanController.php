@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\GeneralSetting;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
@@ -39,8 +40,22 @@ class PlanController extends Controller
             'withdrawal_type' => 'required|between:0,3'
         ]);
 
+        $setting = GeneralSetting::first();
+
+        $product = Cashier::stripe()->products->create([
+            'name' => $request->name
+        ]);
+
+        $stripe_price = Cashier::stripe()->plans->create([
+            'amount' => $request->price * 100,
+            'currency' => $setting->currency,
+            'interval' => 'month',
+            'product' => $product->id,
+        ]);
+
         $plan = new Plan();
         $plan->name = $request->name;
+        $plan->stripe_price = $stripe_price->id;
         $plan->price = $request->price;
         $plan->storage = $request->storage;
         $plan->storage_unit = $request->storage_unit;
@@ -51,10 +66,7 @@ class PlanController extends Controller
             $plan->renewal_type = $request->renewal_type;
         }
         $plan->withdrawal_type = $request->withdrawal_type;
-
         $plan->save();
-
-        $stripe = Cashier::stripe()->plans;
 
         return back()->with('success','Plan Created Successfully');
     }

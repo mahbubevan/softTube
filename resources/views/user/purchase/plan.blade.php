@@ -59,7 +59,11 @@
                       </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="{{route('user.purchase.plan',$item->id)}}" class="btn w-100 bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Purchase') </a>
+                    @if ($item->stripe_price == $stripe_price)
+                        <button class="btn w-100 bg-gray-500 text-white" disabled="disabled"> @lang('Purchased') </button>
+                    @else
+                        <a href="{{route('user.purchase.plan',$item->id)}}" class="btn w-100 bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Purchase') </a>
+                    @endif
                 </div>
             </div>
         </div>
