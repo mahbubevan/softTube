@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Cashier::calculateTaxes();
+        // Cashier::calculateTaxes();
         $setting = GeneralSetting::first();
 
         view()->share("appName",$setting->appname);

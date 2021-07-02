@@ -59,7 +59,7 @@
                       </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="#0" class="btn w-100 bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Purchase') </a>
+                    <a href="{{route('user.purchase.plan',$item->id)}}" class="btn w-100 bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Purchase') </a>
                 </div>
             </div>
         </div>

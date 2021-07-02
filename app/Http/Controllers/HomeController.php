@@ -64,6 +64,7 @@ class HomeController extends Controller
         
         $user = User::where('id',auth()->user()->id)->first();
         $user->addPaymentMethod($request->paymentMethod);
+        $user->updateDefaultPaymentMethod($request->paymentMethod);
         $user->update();
 
         return response()->json([

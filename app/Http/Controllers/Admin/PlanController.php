@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
 use Illuminate\Http\Request;
+use Laravel\Cashier\Cashier;
 
 class PlanController extends Controller
 {
@@ -52,6 +53,8 @@ class PlanController extends Controller
         $plan->withdrawal_type = $request->withdrawal_type;
 
         $plan->save();
+
+        $stripe = Cashier::stripe()->plans;
 
         return back()->with('success','Plan Created Successfully');
     }
