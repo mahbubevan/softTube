@@ -17,6 +17,7 @@ class CreateVideosTable extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
             $table->string('title',50);
+            $table->string('thumbnail');
             $table->text('description');
             $table->string('path');
             $table->boolean('storage')->default(Plan::LOCAL);

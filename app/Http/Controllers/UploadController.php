@@ -10,4 +10,9 @@ class UploadController extends Controller
     {
         return view('user.video.upload');
     }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }

@@ -204,6 +204,7 @@ Route::prefix('user')->name('user.')->group(function () {
             // Upload Routes 
             Route::middleware('isUserSubscribed')->group(function(){
                 Route::get('/upload',[UploadController::class,'upload'])->name('upload');
+                Route::post('/store-upload',[UploadController::class,'store'])->name('upload.store');
             });
 
         });

@@ -54,6 +54,10 @@ if (!function_exists('path')) {
             'size' => '16x16'
         ];
 
+        $path['video'] = [
+            'path' => 'videos/'
+        ];
+
         return $path;
     }
 }
