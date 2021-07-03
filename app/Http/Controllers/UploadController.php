@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,13 +22,13 @@ class UploadController extends Controller
 
         // Checking File Format
         $getExt =  explode("/", $request->type)[1];
-        $exts = array("flv", "mp4", "mkv", "ts", "mov", "avi", "wmv", "m3u8", "x-matroska");
+        $exts = array("flv", "mp4", "mkv", "ts", "mov", "avi", "wmv", "m3u8", "x-matroska", 'quicktime');
 
-        if (!array_search($getExt, $exts)) {
-            return \response()->json([
-                'error' => 'Only Supported Files Are: FLV, MP4, MKV, TS, MOV, AVI, WMV, M3U8'
-            ], 400);
-        }
+        // if (!array_search($getExt, $exts)) {
+        //     return \response()->json([
+        //         'error' => 'Only Supported Files Are: FLV, MP4, MKV, TS, MOV, AVI, WMV, M3U8'
+        //     ], 400);
+        // }
 
         // Checking File Size
         if ($userPlan->storage_unit == Plan::MB) {
@@ -57,7 +58,28 @@ class UploadController extends Controller
 
     public function store(Request $request)
     {
-        
+        $tempLocation = \path(Auth::user()->username)['video']['tempPath'];
+        $mainLocation = \path(Auth::user()->username)['video']['mainPath'];
+
+        if (!file_exists($tempLocation)) {
+            makeDirectory($tempLocation);
+        }
+
+        $ext = explode("/", $request->type)[1];
+        if ($ext == "x-matroska") {
+            $ext = "mkv";
+        }
+        $tempPath = $tempLocation . "/temp.txt";
+
+        file_put_contents($tempPath, $request->videos, FILE_APPEND);
+
+        // $in = \fopen($tempPath, "a");
+        // \fwrite($in, $request->videos);
+        // \fclose($in);
+        // \file_put_contents($tempPath, $request->videos, FILE_APPEND);
+
+
+        return $request->all();
     }
 
     protected function formatBytes($bytes, $unit)

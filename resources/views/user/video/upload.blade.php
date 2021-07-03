@@ -46,8 +46,13 @@
                 $(".progress-bar").css("width","0%")
                 var files = $("#video")[0].files[0]
                 var name = files.name
-                var size = files.size
+                var size = files.size // total file size
                 var type = files.type
+                var start = 0;
+                var step = 1048576; //chunkSize
+                var loaded = 0;
+                var chunks = Math.ceil(size/step,step);
+                var chunk = 0;
                 var url = "{{route('user.check.ext.size')}}"
                 $.ajax({
                     type:"POST",
@@ -59,10 +64,48 @@
                         _token:"{{csrf_token()}}"
                     }
                 }).done(function(data){
-                    $(".progress-bar").css("width","100%")
-                    $(".progress-bar").text("100%")
-                    
+                    var reader = new FileReader();
+                    var blob = files.slice(start,step);
+                    reader.readAsBinaryString(blob);
+
+                    reader.onload = function(e){
+                        var postUrl = "{{route('user.upload.store')}}"
+                        $.ajax({
+                            url:postUrl,
+                            type:"POST",
+                            // processData: false,
+                            // contentType: false,
+                            data:{
+                                videos:reader.result,
+                                _token:"{{csrf_token()}}",
+                                step,
+                                size,
+                                type
+                            },
+                        }).done(function(data){
+                            loaded += step;
+                            console.log(data,size,loaded);
+                            var uploadProgress = Math.min((loaded / size) * 100, 100);
+
+                            $(".progress-bar").css("width",`${uploadProgress}%`)
+                            $(".progress-bar").text(`${uploadProgress}%`)
+
+                            if (loaded <= size) {
+                                blob = files.slice(loaded,loaded+step)
+                                reader.readAsBinaryString(blob)
+                            }else{
+                                loaded = size
+                                toastr.success("Uploaded Successfully")
+                            }
+
+
+
+                        }).fail(function(data){
+                            console.log(data);
+                        })
+                    }
                 }).fail(function(data){
+                    console.log(data);
                     toastr.error(data.responseJSON.error)
                 })
 
