@@ -57,7 +57,7 @@ if (!function_exists('path')) {
 
         $path['video'] = [
             'tempPath' => 'videos' . "/" . $username . "/temp",
-            'mainPath' => 'videos' . "/" . $username . "/" . Carbon::now()->format('Y-m-d H:i:s')
+            'mainPath' => 'videos' . "/" . $username . "/main"
         ];
 
         return $path;

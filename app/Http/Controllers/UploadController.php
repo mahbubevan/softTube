@@ -24,11 +24,11 @@ class UploadController extends Controller
         $getExt =  explode("/", $request->type)[1];
         $exts = array("flv", "mp4", "mkv", "ts", "mov", "avi", "wmv", "m3u8", "x-matroska", 'quicktime');
 
-        // if (!array_search($getExt, $exts)) {
-        //     return \response()->json([
-        //         'error' => 'Only Supported Files Are: FLV, MP4, MKV, TS, MOV, AVI, WMV, M3U8'
-        //     ], 400);
-        // }
+        if (!array_search($getExt, $exts)) {
+            return \response()->json([
+                'error' => 'Only Supported Files Are: FLV, MP4, MKV, TS, MOV, AVI, WMV, M3U8'
+            ], 400);
+        }
 
         // Checking File Size
         if ($userPlan->storage_unit == Plan::MB) {
@@ -65,21 +65,22 @@ class UploadController extends Controller
             makeDirectory($tempLocation);
         }
 
-        $ext = explode("/", $request->type)[1];
-        if ($ext == "x-matroska") {
-            $ext = "mkv";
+        $ext = $request->video->getClientOriginalExtension();
+        $name = \explode(".", $request->video->getClientOriginalName())[0];
+
+
+        $path = $mainLocation . "/" . Carbon::now()->format('Y-m-dHis') . "$name.$ext";
+        $flag = move_uploaded_file($request->video, $path);
+
+        if ($flag) {
+            $data = ["status" => 0, "message" => "File Uploaded Successfully"];
+            return \response()->json($data, 200);
         }
-        $tempPath = $tempLocation . "/temp.txt";
-
-        file_put_contents($tempPath, $request->videos, FILE_APPEND);
-
-        // $in = \fopen($tempPath, "a");
-        // \fwrite($in, $request->videos);
-        // \fclose($in);
-        // \file_put_contents($tempPath, $request->videos, FILE_APPEND);
 
 
-        return $request->all();
+
+        $data = ["status" => 1, "message" => "File Couldn't Uploaded"];
+        return \response()->json($data, 500);
     }
 
     protected function formatBytes($bytes, $unit)

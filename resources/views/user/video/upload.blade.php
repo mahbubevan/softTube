@@ -46,13 +46,8 @@
                 $(".progress-bar").css("width","0%")
                 var files = $("#video")[0].files[0]
                 var name = files.name
-                var size = files.size // total file size
+                var size = files.size
                 var type = files.type
-                var start = 0;
-                var step = 1048576; //chunkSize
-                var loaded = 0;
-                var chunks = Math.ceil(size/step,step);
-                var chunk = 0;
                 var url = "{{route('user.check.ext.size')}}"
                 $.ajax({
                     type:"POST",
@@ -64,46 +59,37 @@
                         _token:"{{csrf_token()}}"
                     }
                 }).done(function(data){
-                    var reader = new FileReader();
-                    var blob = files.slice(start,step);
-                    reader.readAsBinaryString(blob);
+                    var formData = new FormData()
+                    formData.append('video',files)
+                    formData.append('_token',"{{csrf_token()}}")
 
-                    reader.onload = function(e){
-                        var postUrl = "{{route('user.upload.store')}}"
-                        $.ajax({
-                            url:postUrl,
-                            type:"POST",
-                            // processData: false,
-                            // contentType: false,
-                            data:{
-                                videos:reader.result,
-                                _token:"{{csrf_token()}}",
-                                step,
-                                size,
-                                type
-                            },
-                        }).done(function(data){
-                            loaded += step;
-                            console.log(data,size,loaded);
-                            var uploadProgress = Math.min((loaded / size) * 100, 100);
+                    var xmlhttp = new XMLHttpRequest(), method = "POST", url = "{{route('user.upload.store')}}"
+                    xmlhttp.upload.addEventListener("progress",progressHandler,false)
+                    xmlhttp.addEventListener("load",completeHandler,false)
+                    xmlhttp.addEventListener("error",errorHandler,false)
+                    xmlhttp.addEventListener("abort",abortHandler,false)
+                    xmlhttp.open(method,url,true)
+                    xmlhttp.send(formData)
 
-                            $(".progress-bar").css("width",`${uploadProgress}%`)
-                            $(".progress-bar").text(`${uploadProgress}%`)
-
-                            if (loaded <= size) {
-                                blob = files.slice(loaded,loaded+step)
-                                reader.readAsBinaryString(blob)
-                            }else{
-                                loaded = size
-                                toastr.success("Uploaded Successfully")
-                            }
-
-
-
-                        }).fail(function(data){
-                            console.log(data);
-                        })
+                    function progressHandler(event) {
+                        var uploadProgress = Math.round((event.loaded / event.total) * 100);
+                        $(".progress-bar").css("width",`${uploadProgress}%`)
+                        $(".progress-bar").text(`${uploadProgress}%`)
+                        console.log(event);
                     }
+                    function completeHandler(event) {
+                        console.log(event);
+                        toastr.success("File Uploaded Successfully");
+                    }
+
+                    function errorHandler(event) {
+                         console.log(event);
+                     }
+
+                    function abortHandler(event) {
+                         console.log(event);
+                     }
+
                 }).fail(function(data){
                     console.log(data);
                     toastr.error(data.responseJSON.error)
@@ -113,3 +99,6 @@
         })
     </script>
 @endpush
+
+
+
