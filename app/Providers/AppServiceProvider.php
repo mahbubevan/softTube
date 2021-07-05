@@ -29,10 +29,9 @@ class AppServiceProvider extends ServiceProvider
         // Cashier::calculateTaxes();
         $setting = GeneralSetting::first();
 
-        view()->share("appName",$setting->appname);
-        view()->share("logo",$setting->logo);
-        view()->share("favicon",$setting->favicon);
-        view()->share("setting",$setting);
-        
+        view()->share("appName", $setting->appname);
+        view()->share("logo", $setting->logo);
+        view()->share("favicon", $setting->favicon);
+        view()->share("setting", $setting);
     }
 }

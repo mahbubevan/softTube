@@ -3,6 +3,7 @@
 use App\Models\EmailLog;
 use App\Models\GeneralSetting;
 use App\Models\PaymentCredential;
+use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -27,7 +28,7 @@ if (!function_exists('modifyString')) {
 }
 
 if (!function_exists('path')) {
-    function path()
+    function path($username = null)
     {
         $path['admin'] = [
             'path' => 'images/admin/profile',
@@ -55,7 +56,8 @@ if (!function_exists('path')) {
         ];
 
         $path['video'] = [
-            'path' => 'videos/'
+            'tempPath' => 'videos' . "/" . $username . "/temp",
+            'mainPath' => 'videos' . "/" . $username . "/main"
         ];
 
         return $path;

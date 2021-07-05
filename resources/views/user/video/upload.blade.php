@@ -23,6 +23,11 @@
                             <label for="video"> @lang('Video File') </label>
                             <input type="file" name="video" id="video" class="form-control"/>
                         </div>
+                        <div class="form-group col-md-12 mt-3 mb-3">
+                            <div class="progress">
+                                <div class="progress-bar bg-indigo-500" role="progressbar" style="width:0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn float-end bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Upload') </button>
@@ -33,3 +38,76 @@
     </div>
 </div>
 @endsection
+@push('script')
+    <script>
+        "use strict"
+        $(function(){
+            $("#video").on("change",function(e){
+                $(".progress-bar").css("width","0%")
+                var files = $("#video")[0].files[0]
+                var name = files.name
+                var size = files.size
+                var type = files.type
+                var url = "{{route('user.check.ext.size')}}"
+                $.ajax({
+                    type:"POST",
+                    url,
+                    data:{
+                        name,
+                        size,
+                        type,
+                        _token:"{{csrf_token()}}"
+                    }
+                }).done(function(data){
+                    console.log(data);
+                    var formData = new FormData()
+                    formData.append('video',files)
+                    formData.append('_token',"{{csrf_token()}}")
+
+                    var xmlhttp = new XMLHttpRequest(), method = "POST", url = "{{route('user.upload.store')}}"
+                    xmlhttp.upload.addEventListener("progress",progressHandler,false)
+                    xmlhttp.addEventListener("load",completeHandler,false)
+                    xmlhttp.addEventListener("error",errorHandler,false)
+                    xmlhttp.addEventListener("abort",abortHandler,false)
+                    xmlhttp.open(method,url,true)
+                    xmlhttp.send(formData)
+
+                    function progressHandler(event) {
+                        var uploadProgress = Math.round((event.loaded / event.total) * 100);
+                        $(".progress-bar").css("width",`${uploadProgress}%`)
+                        $(".progress-bar").text(`${uploadProgress}%`)
+                        console.log(event);
+                    }
+                    function completeHandler(event) {
+                        console.log(event);
+                        toastr.success("File Uploaded Successfully");
+                    }
+
+                    function errorHandler(event) {
+                         console.log(event);
+                     }
+
+                    function abortHandler(event) {
+                         console.log(event);
+                     }
+
+
+                     xmlhttp.onreadystatechange = function()
+                     {
+                         if (xmlhttp.status == 413) {
+                            toastr.error("File Uploaded Failed. File Too Large");
+                         }
+                     }
+
+                }).fail(function(data){
+                    console.log(data);
+                    toastr.error(data.responseJSON.error)
+                })
+
+            })
+        })
+    </script>
+@endpush
+
+
+

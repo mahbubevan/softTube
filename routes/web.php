@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes(['verify'=> true]);
+Auth::routes(['verify' => true]);
 
 
 /*
@@ -122,17 +122,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         // Plan Manager
-        Route::prefix('plans')->name('plan.')->group(function(){
-            Route::get('list',[PlanController::class,'list'])->name('list');
-            Route::get('create',[PlanController::class,'create'])->name('create');
-            Route::post('store',[PlanController::class,'store'])->name('store');
-            Route::get('edit/{plan}',[PlanController::class,'edit'])->name('edit');
-            Route::post('update/{plan}',[PlanController::class,'update'])->name('update');
+        Route::prefix('plans')->name('plan.')->group(function () {
+            Route::get('list', [PlanController::class, 'list'])->name('list');
+            Route::get('create', [PlanController::class, 'create'])->name('create');
+            Route::post('store', [PlanController::class, 'store'])->name('store');
+            Route::get('edit/{plan}', [PlanController::class, 'edit'])->name('edit');
+            Route::post('update/{plan}', [PlanController::class, 'update'])->name('update');
 
-            Route::get('active/{plan}',[PlanController::class,'active'])->name('active');
-            Route::get('deactive/{plan}',[PlanController::class,'deactive'])->name('deactive');
+            Route::get('active/{plan}', [PlanController::class, 'active'])->name('active');
+            Route::get('deactive/{plan}', [PlanController::class, 'deactive'])->name('deactive');
         });
-
     });
 });
 
@@ -174,41 +173,42 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
 Route::prefix('user')->name('user.')->group(function () {
 
     Route::middleware('auth')->group(function () {
-        Route::get('email-verify-form',[AuthorizeController::class,'authorizForm'])->name('authorize.form');
-        Route::get('resend-code',[AuthorizeController::class,'resendCode'])->name('authorize.resend');
+        Route::get('email-verify-form', [AuthorizeController::class, 'authorizForm'])->name('authorize.form');
+        Route::get('resend-code', [AuthorizeController::class, 'resendCode'])->name('authorize.resend');
 
-        Route::middleware('verified')->group(function(){
+        Route::middleware('verified')->group(function () {
             Route::get('dashboard', [HomeController::class, 'index'])->name('index');
             Route::get('profile', [HomeController::class, 'profile'])->name('profile');
             Route::post('profile', [HomeController::class, 'profileUpdate'])->name('profile.update');
             Route::get('password', [HomeController::class, 'password'])->name('password');
             Route::post('password', [HomeController::class, 'passwordUpdate'])->name('password.update');
-    
-            // Deposit Methods 
-            Route::prefix('deposit')->name('deposit.')->group(function(){
-                Route::get('/gateway',[HomeController::class,'selector'])->name('selector');
-                Route::post('/gateway/save-payment-info',[HomeController::class,'savePaymentInfo'])->name('save.payment.info');
-    
-                Route::get('set',[HomeController::class,'setDepositAmount'])->name('set.amount');
-                Route::get('history',[HomeController::class,'history'])->name('history');
-                Route::post('money',[HomeController::class,'depositMoney'])->name('money');
+
+            // Deposit Methods
+            Route::prefix('deposit')->name('deposit.')->group(function () {
+                Route::get('/gateway', [HomeController::class, 'selector'])->name('selector');
+                Route::post('/gateway/save-payment-info', [HomeController::class, 'savePaymentInfo'])->name('save.payment.info');
+
+                Route::get('set', [HomeController::class, 'setDepositAmount'])->name('set.amount');
+                Route::get('history', [HomeController::class, 'history'])->name('history');
+                Route::post('money', [HomeController::class, 'depositMoney'])->name('money');
             });
-    
+
             Route::get('billing-portal', function (Request $request) {
                 return $request->user()->redirectToBillingPortal();
             });
 
             //Plan Routes
-            Route::get('/plans',[PurchaseController::class,'plan'])->name('plan');
-            Route::get('/plan-purchase/{plan}',[PurchaseController::class,'purchase'])->name('purchase.plan');
-            // Upload Routes 
-            Route::middleware('isUserSubscribed')->group(function(){
-                Route::get('/upload',[UploadController::class,'upload'])->name('upload');
-                Route::post('/store-upload',[UploadController::class,'store'])->name('upload.store');
+            Route::get('/plans', [PurchaseController::class, 'plan'])->name('plan');
+            Route::get('/plan-purchase/{plan}', [PurchaseController::class, 'purchase'])->name('purchase.plan');
+
+            // Upload Routes
+            Route::middleware('isUserSubscribed')->group(function () {
+                Route::get('/upload', [UploadController::class, 'upload'])->name('upload');
+                Route::post('check-ext-size', [UploadController::class, 'checkExtSize'])->name('check.ext.size');
+                Route::post('/store-upload', [UploadController::class, 'store'])->name('upload.store');
+                Route::post('/convert-upload', [UploadController::class, 'convertToObject'])->name('upload.convert');
             });
-
         });
-
     });
 });
 
@@ -224,4 +224,3 @@ Route::get('/', function () {
 });
 
 Route::get('/change/language', [FrontendController::class, 'changeLanguage'])->name('change.language');
-

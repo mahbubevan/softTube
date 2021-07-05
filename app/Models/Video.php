@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
     use HasFactory;
+
+    const ACTIVE = 1;
+    const DEACTIVE = 0;
 }
