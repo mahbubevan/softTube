@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
+use App\Models\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,8 @@ class UploadController extends Controller
         }
 
         // Checking File Size
+        // also have to check user used storage. it will be implemented after video info save to db.
+
         if ($userPlan->storage_unit == Plan::MB) {
             $sizeInMb = $this->formatBytes($request->size, "MB");
             if ($sizeInMb > $userPlan->storage) {
@@ -72,17 +75,40 @@ class UploadController extends Controller
         $name = \explode(".", $request->video->getClientOriginalName())[0];
 
         // Check user plan storage and upload to AMAZON S3
-        // $request->file('video')->store();
 
-        $path = $mainLocation . "/" . Carbon::now()->format('Y-m-dHis') . "$name.$ext";
-        $flag = move_uploaded_file($request->video, $path);
+        $user = User::where('id', Auth::id())->first();
+        $userPlan = Plan::where('stripe_price', $user->subscriptions[0]->stripe_price)->first();
 
-        if ($flag) {
-            $data = ["status" => 0, "message" => "File Uploaded Successfully"];
-            return \response()->json($data, 200);
+        if ($userPlan->storage_type == Plan::AWS) {
+            $path = "From AMAZON";
+            $flag = $request->file('video')->store(auth()->user()->username,'s3'); // Not Tested Yet
+        }else{
+            $path = $mainLocation . "/" . Carbon::now()->format('Y-m-dHis') . "$name.$ext";
+            $flag = move_uploaded_file($request->video, $path);
         }
 
+        if ($flag) {
+            $video = new Video();
+            $video->user_id = Auth::id();
+            $video->path = $path;
 
+            if ($userPlan->storage_type == Plan::AWS) {
+                $video->storage = Plan::AWS;
+            }else{
+                $video->storage = Plan::LOCAL;
+            }
+            
+            $video->size = $request->size;
+            // Here Status will be updated depended on admin video review on or off.
+            $video->save();
+            
+            $data = [ 
+                "status" => 0, 
+                "video" => $video->id, 
+                "message" => "File Uploaded Successfully"
+            ];
+            return \response()->json($data, 200);
+        }
 
         $data = ["status" => 1, "message" => "File Couldn't Uploaded"];
         return \response()->json($data, 500);

@@ -59,11 +59,11 @@
                         _token:"{{csrf_token()}}"
                     }
                 }).done(function(data){
-                    console.log(data);
                     var formData = new FormData()
                     formData.append('video',files)
+                    formData.append('size',size)
                     formData.append('_token',"{{csrf_token()}}")
-
+                    
                     var xmlhttp = new XMLHttpRequest(), method = "POST", url = "{{route('user.upload.store')}}"
                     xmlhttp.upload.addEventListener("progress",progressHandler,false)
                     xmlhttp.addEventListener("load",completeHandler,false)
@@ -76,31 +76,33 @@
                         var uploadProgress = Math.round((event.loaded / event.total) * 100);
                         $(".progress-bar").css("width",`${uploadProgress}%`)
                         $(".progress-bar").text(`${uploadProgress}%`)
-                        console.log(event);
                     }
                     function completeHandler(event) {
-                        console.log(event);
+                        
                         toastr.success("File Uploaded Successfully");
                     }
 
                     function errorHandler(event) {
-                         console.log(event);
+                         
                      }
 
                     function abortHandler(event) {
-                         console.log(event);
+                         
                      }
 
 
-                     xmlhttp.onreadystatechange = function()
+                     xmlhttp.onreadystatechange = function(data)
                      {
                          if (xmlhttp.status == 413) {
                             toastr.error("File Uploaded Failed. File Too Large");
                          }
+                         
+                         if (xmlhttp.status == 500) {
+            
+                         }
                      }
 
                 }).fail(function(data){
-                    console.log(data);
                     toastr.error(data.responseJSON.error)
                 })
 
