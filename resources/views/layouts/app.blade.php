@@ -18,6 +18,9 @@
 
     <!-- Toastr -->
     <link rel="stylesheet" href="{{asset('paneladmin/plugins/toastr/toastr.min.css')}}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset('paneladmin/plugins/select2/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('paneladmin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 
     {{-- Tailwind CSS --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -81,6 +84,8 @@
 <script src="{{asset('js/jquery.min.js')}}"></script>
 
 <script src="{{ asset('js/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{asset('paneladmin/plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- Toastr -->
 <script src="{{asset('paneladmin/plugins/toastr/toastr.min.js')}}"></script>
 
