@@ -24,7 +24,8 @@ class CreateVideosTable extends Migration
             $table->text('description')->nullable();
             $table->text('tags')->nullable();
             $table->string('path');
-            $table->decimal('size',28,8)->comment('value in bytes');
+            $table->decimal('size', 28, 8)->comment('value in bytes');
+            $table->integer('watched')->default(0)->nullable();
             $table->boolean('storage')->default(Plan::LOCAL);
             $table->boolean('status')->default(Video::ACTIVE);
 

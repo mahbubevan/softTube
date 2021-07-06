@@ -73,7 +73,7 @@ class UploadController extends Controller
         }
 
         $ext = $request->video->getClientOriginalExtension();
-        $name = \explode(".", $request->video->getClientOriginalName())[0];
+        $name = \trim(explode(".", $request->video->getClientOriginalName())[0]);
 
         // Check user plan storage and upload to AMAZON S3
 
