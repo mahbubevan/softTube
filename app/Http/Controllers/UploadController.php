@@ -124,9 +124,12 @@ class UploadController extends Controller
         return \response()->json($data, 500);
     }
 
-    public function videoDetailsEdit(Video $video)
+    public function videoDetailsEdit(Request $request)
     {
-        dd($video);
+        $video = Video::where('user_id',Auth::id())->where('id',$request->videoId)->first();
+        if(!$video) return redirect()->route('user.upload')->with('error','Invalid Video Request');
+
+        return view('user.video.edit',compact('video'));
     }
 
     protected function formatBytes($bytes, $unit)

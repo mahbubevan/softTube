@@ -7,20 +7,10 @@
                 <div class="card-header bg-indigo-500 text-white">
                     <h4 class="card-title"> @lang('Upload Your Video') </h4>
                 </div>
-                <form action="{{route('user.upload.store')}}" method="post" enctype="multipart/form-data">
+                <form>
                     @csrf
                     <div class="card-body">
                         <div class="form-group col-md-12">
-                            <label for="title"> @lang('Title') </label>
-                            <input type="text" name="title" id="title" class="form-control">
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="description"> @lang('Description') </label>
-                            <textarea name="description" id="description" class="form-control"></textarea>
-                        </div>
-
-                        <div class="form-group col-md-12">
-                            <label for="video"> @lang('Video File') </label>
                             <input type="file" name="video" id="video" class="form-control"/>
                         </div>
                         <div class="form-group col-md-12 mt-3 mb-3">
@@ -29,11 +19,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn float-end bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Upload') </button>
-                        <a href="{{route('user.')}}" class="btn float-end bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Upload') </a>
-                    </div>
                 </form>
+                <div class="custom-footer"></div>
             </div>
         </div>
     </div>
@@ -79,7 +66,22 @@
                         $(".progress-bar").text(`${uploadProgress}%`)
                     }
                     function completeHandler(event) {
-                        console.log(xmlhttp);
+                        var jsonResponse = JSON.parse(xmlhttp.response)
+                        if (jsonResponse.status == 0) {
+                            var id = jsonResponse.video
+                            $(".custom-footer").html(`
+                                <form action="{{route('user.video.details.edit')}}" method="GET">
+                                    <input type="hidden" name="videoId" id="videoId" value="${id}"/>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-700 text-white float-end"> @lang('Next') </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            `)
+                        }
                         toastr.success("File Uploaded Successfully");
                     }
 
