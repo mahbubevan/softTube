@@ -206,6 +206,8 @@ Route::prefix('user')->name('user.')->group(function () {
                 Route::get('/upload', [UploadController::class, 'upload'])->name('upload');
                 Route::post('check-ext-size', [UploadController::class, 'checkExtSize'])->name('check.ext.size');
                 Route::post('/store-upload', [UploadController::class, 'store'])->name('upload.store');
+                Route::get('/video-details-edit/{video}', [UploadController::class, 'videoDetailsEdit'])->name('video.details.edit');
+
                 Route::post('/convert-upload', [UploadController::class, 'convertToObject'])->name('upload.convert');
             });
         });

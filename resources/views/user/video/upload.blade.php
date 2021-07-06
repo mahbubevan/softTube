@@ -31,6 +31,7 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn float-end bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Upload') </button>
+                        <a href="{{route('user.')}}" class="btn float-end bg-indigo-500 hover:bg-indigo-700 text-white"> @lang('Upload') </a>
                     </div>
                 </form>
             </div>
@@ -78,7 +79,7 @@
                         $(".progress-bar").text(`${uploadProgress}%`)
                     }
                     function completeHandler(event) {
-                        
+                        console.log(xmlhttp);
                         toastr.success("File Uploaded Successfully");
                     }
 

@@ -67,8 +67,8 @@ class UploadController extends Controller
         $tempLocation = \path(Auth::user()->username)['video']['tempPath'];
         $mainLocation = \path(Auth::user()->username)['video']['mainPath'];
 
-        if (!file_exists($tempLocation)) {
-            makeDirectory($tempLocation);
+        if (!file_exists($mainLocation)) {
+            makeDirectory($mainLocation);
         }
 
         $ext = $request->video->getClientOriginalExtension();
@@ -84,7 +84,17 @@ class UploadController extends Controller
             $flag = $request->file('video')->store(auth()->user()->username,'s3'); // Not Tested Yet
         }else{
             $path = $mainLocation . "/" . Carbon::now()->format('Y-m-dHis') . "$name.$ext";
-            $flag = move_uploaded_file($request->video, $path);
+
+            try {
+                chmod($mainLocation,0770);
+            } catch (\Throwable $th) {
+                return $th;
+            }
+            try {
+                $flag = move_uploaded_file($request->video, $path);
+            } catch (\Throwable $th) {
+                return $th;
+            }
         }
 
         if ($flag) {
@@ -112,6 +122,11 @@ class UploadController extends Controller
 
         $data = ["status" => 1, "message" => "File Couldn't Uploaded"];
         return \response()->json($data, 500);
+    }
+
+    public function videoDetailsEdit(Video $video)
+    {
+        dd($video);
     }
 
     protected function formatBytes($bytes, $unit)

@@ -21,7 +21,7 @@
     
                             <div class="form-group col-md-12">
                                 <label for="password" class="col-form-label">{{ __('Password') }}</label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                                <input id="password" autocomplete="new-password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
     
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
