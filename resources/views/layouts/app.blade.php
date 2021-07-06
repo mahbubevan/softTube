@@ -12,7 +12,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <!-- Line Awesome Icons -->
+    <link rel="stylesheet" href="{{asset('css/lineawesome/css/line-awesome.min.css')}}">
     <!-- Styles -->
     <link href="{{ asset('css/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
 
@@ -89,7 +90,11 @@
 <!-- Toastr -->
 <script src="{{asset('paneladmin/plugins/toastr/toastr.min.js')}}"></script>
 
-
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
 @stack('script')
 @include('partials.toaster')
 </html>
