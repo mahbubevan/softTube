@@ -57,7 +57,8 @@ if (!function_exists('path')) {
 
         $path['video'] = [
             'tempPath' => 'videos' . "/" . $username . "/temp",
-            'mainPath' => 'videos' . "/" . $username . "/main"
+            'mainPath' => 'videos' . "/" . $username . "/main",
+            'thumbnail' => 'videos' . "/thumbnail",
         ];
 
         return $path;
@@ -188,5 +189,19 @@ if (!function_exists('paymentCred')) {
     {
         $cred = PaymentCredential::first();
         return $cred;
+    }
+}
+
+if (!function_exists('formatBytes')) {
+    function formatBytes($bytes, $unit)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+        $index = array_search($unit, $units);
+
+        for ($i = 0; $i < $index; $i++) {
+            $bytes /= 1024;
+        }
+
+        return $bytes;
     }
 }

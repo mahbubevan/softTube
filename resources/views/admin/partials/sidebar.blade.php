@@ -116,6 +116,18 @@
             </a>
           </li>
 
+        <li class="nav-header"> @lang('Video Manages') </li>
+        <hr class="bg-white">
+        <li class="nav-item">
+          <a href="{{route('admin.video.category.list')}}" class="nav-link @if(request()->routeIs('admin.video.category.*')) active @endif">
+              <i class="nav-icon las la-language"></i>
+            <p>
+              {{__('Categories')}}
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+        </li>
+
         <li class="nav-header"> @lang('Application Setting') </li>
           <hr class="bg-white">
           <li class="nav-item">

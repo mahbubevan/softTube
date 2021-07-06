@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\Video\CategoryController;
 use App\Http\Controllers\AuthorizeController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
@@ -131,6 +132,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
             Route::get('active/{plan}', [PlanController::class, 'active'])->name('active');
             Route::get('deactive/{plan}', [PlanController::class, 'deactive'])->name('deactive');
+        });
+
+        // Video Manager
+        Route::prefix('video')->name('video.')->group(function () {
+
+            Route::prefix('category')->name('category.')->group(function () {
+                Route::get('list', [CategoryController::class, 'list'])->name('list');
+                Route::post('store', [CategoryController::class, 'store'])->name('store');
+                Route::post('update', [CategoryController::class, 'update'])->name('update');
+            });
         });
     });
 });

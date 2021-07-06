@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\Video;
@@ -24,7 +25,7 @@ class UploadController extends Controller
         try {
             $getExt =  explode("/", $request->type)[1];
         } catch (\Throwable $th) {
-            $getExt = explode(".",$request->name)[1];
+            $getExt = explode(".", $request->name)[1];
         }
         $exts = array("flv", "mp4", "mkv", "ts", "mov", "avi", "wmv", "m3u8", "x-matroska", 'quicktime');
 
@@ -81,12 +82,12 @@ class UploadController extends Controller
 
         if ($userPlan->storage_type == Plan::AWS) {
             $path = "From AMAZON";
-            $flag = $request->file('video')->store(auth()->user()->username,'s3'); // Not Tested Yet
-        }else{
+            $flag = $request->file('video')->store(auth()->user()->username, 's3'); // Not Tested Yet
+        } else {
             $path = $mainLocation . "/" . Carbon::now()->format('Y-m-dHis') . "$name.$ext";
 
             try {
-                chmod($mainLocation,0770);
+                chmod($mainLocation, 0770);
             } catch (\Throwable $th) {
                 return $th;
             }
@@ -104,17 +105,17 @@ class UploadController extends Controller
 
             if ($userPlan->storage_type == Plan::AWS) {
                 $video->storage = Plan::AWS;
-            }else{
+            } else {
                 $video->storage = Plan::LOCAL;
             }
-            
+
             $video->size = $request->size;
             // Here Status will be updated depended on admin video review on or off.
             $video->save();
-            
-            $data = [ 
-                "status" => 0, 
-                "video" => $video->id, 
+
+            $data = [
+                "status" => 0,
+                "video" => $video->id,
                 "message" => "File Uploaded Successfully"
             ];
             return \response()->json($data, 200);
@@ -126,10 +127,32 @@ class UploadController extends Controller
 
     public function videoDetailsEdit(Request $request)
     {
-        $video = Video::where('user_id',Auth::id())->where('id',$request->videoId)->first();
-        if(!$video) return redirect()->route('user.upload')->with('error','Invalid Video Request');
+        $video = Video::where('user_id', Auth::id())->where('id', $request->videoId)->first();
+        if (!$video) return redirect()->route('user.upload')->with('error', 'Invalid Video Request');
 
-        return view('user.video.edit',compact('video'));
+        $categories = Category::get();
+        $user = User::where('id', Auth::id())->first();
+        $userPlan = Plan::where('stripe_price', $user->subscriptions[0]->stripe_price)->first();
+
+        return view('user.video.edit', compact('video', 'categories', 'userPlan'));
+    }
+
+    public function videoDetailsUpdate(Request $request)
+    {
+        $video = Video::where('user_id', Auth::id())->where('id', $request->videoId)->first();
+        if (!$video) return redirect()->route('user.upload')->with('error', 'Invalid Video Request');
+        $location = \path()['video']['thumbnail'];
+
+        if ($request->has('thumbnail')) {
+            $video->thumbnail = \uploadImage($request->thumbnail, $location, "300x300", $video->thumbnail);
+        }
+        $video->title = $request->title;
+        $video->category_id = $request->category;
+        $video->tags = $request->tags;
+        $video->description = $request->description;
+        $video->update();
+
+        return \redirect()->route('user.index')->with('success', 'Video Information Updated');
     }
 
     protected function formatBytes($bytes, $unit)

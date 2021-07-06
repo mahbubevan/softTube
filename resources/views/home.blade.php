@@ -13,6 +13,24 @@
             </div>
         </div>
     </div>
+    <div class="row justify-content-center mt-5 mb-5">
+        @forelse ($videos as $item)
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-green-500 text-white">
+                    <h4 class="card-title"> @lang(__($item->title)) </h4>
+                </div>
+                <div class="card-body">
+                    <video width="100%" height="240" controls>
+                        <source src="{{asset($item->path)}}" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        @empty
+            <span class="h1"> @lang('No Video Uploaded') </span>
+        @endforelse
+    </div>
 </div>
 
 <!-- Modal -->

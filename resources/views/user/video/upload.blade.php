@@ -51,7 +51,7 @@
                     formData.append('video',files)
                     formData.append('size',size)
                     formData.append('_token',"{{csrf_token()}}")
-                    
+
                     var xmlhttp = new XMLHttpRequest(), method = "POST", url = "{{route('user.upload.store')}}"
                     xmlhttp.upload.addEventListener("progress",progressHandler,false)
                     xmlhttp.addEventListener("load",completeHandler,false)
@@ -86,11 +86,11 @@
                     }
 
                     function errorHandler(event) {
-                         
+
                      }
 
                     function abortHandler(event) {
-                         
+
                      }
 
 
@@ -99,9 +99,9 @@
                          if (xmlhttp.status == 413) {
                             toastr.error("File Uploaded Failed. File Too Large");
                          }
-                         
+
                          if (xmlhttp.status == 500) {
-            
+
                          }
                      }
 
