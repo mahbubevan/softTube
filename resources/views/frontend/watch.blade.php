@@ -29,14 +29,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="video-description">
-
+                <div class="row mt-3 video-description">
+                    <div class="col-md-9">
+                        <span class="h2"> @lang('Description') </span>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#0" class="btn bg-pink-800 text-white"> @lang('Subscribe') </a>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="video-comments">
-                        
+                        <span class="h3">0 @lang('Comments') </span>
+                        <div class="comments"></div>
                     </div>
                 </div>
             </div>
