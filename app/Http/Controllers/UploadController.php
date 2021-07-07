@@ -166,4 +166,11 @@ class UploadController extends Controller
 
         return $bytes;
     }
+
+    public function videos()
+    {
+        $videos = Video::where('user_id',Auth::id())->orderBy('id','desc')->paginate(20);
+
+        return view('user.video.list',compact('videos'));
+    }
 }

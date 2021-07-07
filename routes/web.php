@@ -215,6 +215,7 @@ Route::prefix('user')->name('user.')->group(function () {
             // Upload Routes
             Route::middleware('isUserSubscribed')->group(function () {
                 Route::get('/upload', [UploadController::class, 'upload'])->name('upload');
+                Route::get('/videos', [UploadController::class, 'videos'])->name('videos');
                 Route::post('check-ext-size', [UploadController::class, 'checkExtSize'])->name('check.ext.size');
                 Route::post('/store-upload', [UploadController::class, 'store'])->name('upload.store');
                 Route::get('/video-details-edit', [UploadController::class, 'videoDetailsEdit'])->name('video.details.edit');
@@ -233,8 +234,7 @@ Route::prefix('user')->name('user.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [FrontendController::class,'main'])->name('main');
+Route::get('/watch', [FrontendController::class,'main'])->name('main');
 
 Route::get('/change/language', [FrontendController::class, 'changeLanguage'])->name('change.language');
