@@ -12,7 +12,7 @@
                             @forelse ($items as $j=>$val)
                                 <div class="col-md-3">
                                     <div class="card">
-                                        <div class="card-body">
+                                        <div class="card-body video">
                                             <video width="100%" height="300" controls>
                                                 <source src="{{asset($val->path)}}" type="video/mp4">
                                             </video>
@@ -42,7 +42,14 @@
 @push('script')
     <script>
         $(function(){
-            
+            $(".video").on({
+                mouseenter: function () {
+                    $('video', this).get(0).play(); 
+                },
+                mouseleave: function () {
+                    $('video', this).get(0).pause(); 
+                }
+            });
         })
     </script>
 @endpush
