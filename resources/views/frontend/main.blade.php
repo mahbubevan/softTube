@@ -13,9 +13,14 @@
                                 <div class="col-md-3">
                                     <div class="card">
                                         <div class="card-body video">
-                                            <video loop muted width="100%" height="300" controls>
-                                                <source src="{{asset($val->path)}}" type="video/mp4">
-                                            </video>
+                                            <form action="{{route('watch')}}" method="get">
+                                                <button type="submit">
+                                                    <input type="hidden" name="v" value="{{$val->id}}">
+                                                    <video loop muted width="100%" height="300" controls>
+                                                        <source src="{{asset($val->path)}}" type="video/mp4">
+                                                    </video>
+                                                </button>
+                                            </form>
                                         </div>
                                         <div class="card-footer">
                                             <span class="h4 d-block"> 

@@ -17,7 +17,9 @@ class FrontendController extends Controller
 
     public function watch(Request $request)
     {
-        dd($request->all());
+        $video = Video::where('id',$request->v)->where('status',Video::ACTIVE)->first();
+        
+        return view('frontend.watch',compact('video'));
     }
 
     public function changeLanguage(Request $request)
