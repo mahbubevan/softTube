@@ -13,12 +13,17 @@
                                 <div class="col-md-3">
                                     <div class="card">
                                         <div class="card-body">
-                                            <video width="100%" height="300" autoplay controls>
+                                            <video width="100%" height="300" controls>
                                                 <source src="{{asset($val->path)}}" type="video/mp4">
                                             </video>
                                         </div>
                                         <div class="card-footer">
-                                            <span class="h4 d-block"> {{__($val->title)}} </span>
+                                            <span class="h4 d-block"> 
+                                                <form action="{{route('watch')}}" method="get">
+                                                    <input type="hidden" name="v" value="{{$val->id}}">
+                                                    <button onclick="this.form.submit()"> {{__($val->title)}} </button>
+                                                </form>
+                                            </span>
                                             <span> {{$val->watched}} @lang('views') | </span>
                                             <span> {{$val->created_at->diffforhumans()}} </span>
                                         </div>
@@ -34,3 +39,10 @@
         @endforeach
     </div>
 @endsection
+@push('script')
+    <script>
+        $(function(){
+            
+        })
+    </script>
+@endpush

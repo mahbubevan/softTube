@@ -235,6 +235,6 @@ Route::prefix('user')->name('user.')->group(function () {
 */
 
 Route::get('/', [FrontendController::class,'main'])->name('main');
-Route::get('/watch', [FrontendController::class,'main'])->name('main');
+Route::get('/watch', [FrontendController::class,'watch'])->name('watch');
 
 Route::get('/change/language', [FrontendController::class, 'changeLanguage'])->name('change.language');
