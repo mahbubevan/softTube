@@ -13,7 +13,7 @@
                                 <div class="col-md-3">
                                     <div class="card">
                                         <div class="card-body video">
-                                            <video width="100%" height="300" controls>
+                                            <video loop muted width="100%" height="300" controls>
                                                 <source src="{{asset($val->path)}}" type="video/mp4">
                                             </video>
                                         </div>
