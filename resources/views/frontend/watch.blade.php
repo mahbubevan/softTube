@@ -20,17 +20,14 @@
                                 <span> @lang('Uploaded ') {{$video->created_at->diffforhumans()}} </span>
                             </div>
                             <div class="d-flex justify-content-evenly">
-                                <div class="like h3">  
-                                    <form action="{{route('user.like')}}" method="post">
-                                        @csrf
-                                        <span>0</span>
-                                        <span class="" onclick="this.form.submit()"><i class="las la-thumbs-up"></i></span>    
-                                    </form> 
+                                <div class="like h3">                                      
+                                    <span>0</span>
+                                    <span data-toggle="tooltip" title="@lang('Like')" id="like" class="link"><i class="las la-thumbs-up"></i></span>                                        
                                 </div>
-                                <div class="dislike h3"> <span>0</span> <span><i class="las la-thumbs-down"></i></span> </div>
-                                <div class="share h3"> <span></span> <span><i class="las la-share-alt-square"></i></span> </div>
-                                <div class="watchlater h3"> <span></span> <span><i class="las la-folder-plus"></i></span> </div>
-                                <div class="report h3"> <span></span> <span><i class="las la-flag"></i></span> </div>
+                                <div class="dislike h3"> <span>0</span> <span data-toggle="tooltip" title="@lang('Dislike')" class="link" id="dislike"><i class="las la-thumbs-down"></i></span> </div>
+                                <div class="share h3"> <span></span> <span data-toggle="tooltip" title="@lang('Share')" class="link" id="share"><i class="las la-share-alt-square"></i></span> </div>
+                                <div class="watchlater h3"> <span></span> <span data-toggle="tooltip" title="@lang('Add To Watch Later')" class="link" id="watchlater"><i class="las la-folder-plus"></i></span> </div>
+                                <div class="report h3"> <span></span> <span data-toggle="tooltip" title="@lang('Report')" class="link" id="report"><i class="las la-flag"></i></span> </div>
                             </div>
                         </div>
                     </div>
@@ -56,6 +53,34 @@
         </div>
     </div>
 @endsection
+@push('style')
+    <style>
+        .link{
+            cursor: pointer;
+        }
+    </style>
+@endpush
 @push('script')
-
+    <script>
+        $(function(){
+            $("#like").on("click",function(){
+                console.log("hello");
+                var url = "{{route('user.like')}}"
+                var id = "{{$video->id}}"
+                
+                $.ajax({
+                    url,
+                    method:"POST",
+                    data:{
+                        _token:"{{csrf_token()}}",
+                        id
+                    }
+                }).done(function(data){
+                    console.log(data);
+                }).fail(function(data){
+                    console.log(data);
+                })
+            })
+        })
+    </script>
 @endpush
