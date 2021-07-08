@@ -20,4 +20,20 @@ class Video extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class)->count();
+    }
+
+    public function dislikes()
+    {
+        return $this->hasMany(Dislike::class)->count();
+    }
+
 }

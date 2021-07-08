@@ -20,7 +20,13 @@
                                 <span> @lang('Uploaded ') {{$video->created_at->diffforhumans()}} </span>
                             </div>
                             <div class="d-flex justify-content-evenly">
-                                <div class="like h3"> <span>0</span> <span><i class="las la-thumbs-up"></i></span> </div>
+                                <div class="like h3">  
+                                    <form action="{{route('user.like')}}" method="post">
+                                        @csrf
+                                        <span>0</span>
+                                        <span class="" onclick="this.form.submit()"><i class="las la-thumbs-up"></i></span>    
+                                    </form> 
+                                </div>
                                 <div class="dislike h3"> <span>0</span> <span><i class="las la-thumbs-down"></i></span> </div>
                                 <div class="share h3"> <span></span> <span><i class="las la-share-alt-square"></i></span> </div>
                                 <div class="watchlater h3"> <span></span> <span><i class="las la-folder-plus"></i></span> </div>

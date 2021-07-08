@@ -20,6 +20,7 @@ use App\Http\Controllers\Vendor\Auth\ForgotPasswordController as VendorForgotPas
 use App\Http\Controllers\Vendor\Auth\LoginController as VendorLoginController;
 use App\Http\Controllers\Vendor\Auth\ResetPasswordController as VendorResetPasswordController;
 use App\Http\Controllers\Vendor\VendorController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -223,6 +224,13 @@ Route::prefix('user')->name('user.')->group(function () {
 
                 Route::post('/convert-upload', [UploadController::class, 'convertToObject'])->name('upload.convert');
             });
+
+            // Like, DisLike, Comment, Channel Subscription, Report
+            Route::post('/video-like',[VideoController::class,'like'])->name('like');
+            Route::post('/video-dislike',[VideoController::class,'dislike'])->name('dislike');
+            Route::post('/video-subscribe',[VideoController::class,'subscribe'])->name('subscribe');
+            Route::post('/video-comment',[VideoController::class,'comment'])->name('comment');
+
         });
     });
 });
