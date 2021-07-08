@@ -14,8 +14,8 @@ class VideoController extends Controller
             'id' => 'required'
         ]);
 
-        $video = Video::where('user_id','!=',Auth::id())->where('id',$request->id)->firstOrFail();
-        
+        $video = Video::with('likes')->where('user_id','!=',Auth::id())->where('id',$request->id)->first();
+        return $video;
     }
     public function dislike(){}
     public function comment(){}

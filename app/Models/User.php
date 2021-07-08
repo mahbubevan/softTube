@@ -45,4 +45,26 @@ class User extends Authenticatable
     {
         return $this->hasMany(EmailLog::class, 'user_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function subscribes()
+    {
+        return $this->hasMany(Subscribe::class);
+    }
+
+    public function likedVideos()
+    {
+        return $this->belongsToMany(Video::class,'likes');
+    }
+
+    public function subscribedVideos()
+    {
+        return $this->belongsToMany(Video::class,'subscribes');
+    }
+
+
 }
