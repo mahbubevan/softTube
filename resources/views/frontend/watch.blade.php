@@ -20,9 +20,9 @@
                                 <span> @lang('Uploaded ') {{$video->created_at->diffforhumans()}} </span>
                             </div>
                             <div class="d-flex justify-content-evenly">
-                                <div class="like h3">                                      
+                                <div class="like h3">
                                     <span>0</span>
-                                    <span data-toggle="tooltip" title="@lang('Like')" id="like" class="link"><i class="las la-thumbs-up"></i></span>                                        
+                                    <span data-toggle="tooltip" title="@lang('Like')" id="like" class="link"><i class="las la-thumbs-up"></i></span>
                                 </div>
                                 <div class="dislike h3"> <span>0</span> <span data-toggle="tooltip" title="@lang('Dislike')" class="link" id="dislike"><i class="las la-thumbs-down"></i></span> </div>
                                 <div class="share h3"> <span></span> <span data-toggle="tooltip" title="@lang('Share')" class="link" id="share"><i class="las la-share-alt-square"></i></span> </div>
@@ -67,7 +67,7 @@
                 console.log("hello");
                 var url = "{{route('user.like')}}"
                 var id = "{{$video->id}}"
-                
+
                 $.ajax({
                     url,
                     method:"POST",
@@ -78,7 +78,9 @@
                 }).done(function(data){
                     console.log(data);
                 }).fail(function(data){
-                    console.log(data);
+                    if (data.status == 401) {
+                        
+                    }
                 })
             })
         })
