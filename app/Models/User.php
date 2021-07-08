@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Video::class,'likes');
     }
 
+    public function dislikedVideos()
+    {
+        return $this->belongsToMany(Video::class,'dislikes');
+    }
+
     public function subscribedVideos()
     {
         return $this->belongsToMany(Video::class,'subscribes');

@@ -29,32 +29,32 @@ class Video extends Model
 
     public function likes()
     {
-        return $this->hasMany(Like::class)->count();
+        return $this->hasMany(Like::class);
     }
 
     public function dislikes()
     {
-        return $this->hasMany(Dislike::class)->count();
+        return $this->hasMany(Dislike::class);
     }
 
     public function subscribes()
     {
-        return $this->hasMany(Subscribe::class)->count();
+        return $this->hasMany(Subscribe::class);
     }
 
     public function isLikedByUser()
     {
-        return $this->likes()->where('user_id',Auth::id())->first();
+        return $this->likes()->where('user_id',Auth::id())->exists();
     }
 
     public function isDislikedByUser()
     {
-        return $this->dislikes()->where('user_id',Auth::id())->first();
+        return $this->dislikes()->where('user_id',Auth::id())->exists();
     }
 
     public function isSubscribedByUser()
     {
-        return $this->subscribes()->where('user_id',Auth::id())->first();
+        return $this->subscribes()->where('user_id',Auth::id())->exists();
     }
 
 }
