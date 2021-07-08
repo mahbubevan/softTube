@@ -62,8 +62,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <span class="h4 text-center d-block">@lang('Liked This Video ')?</span>
-          <span class="h6 text-center"> @lang('Sign in to make your like count') </span>
+          <span class="h4 text-center d-block t1"></span>
+          <span class="h6 text-center d-block t2"></span>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm bg-black text-white" data-bs-dismiss="modal"> @lang('Close') </button>
@@ -111,6 +111,9 @@
                 }).fail(function(data){
                     if (data.status == 401) {
                         var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
+                        $('.t1').text("@lang('Liked This Video') ?")
+                        $('.t2').text("@lang('Login To Make Your Like Count')")
+                        
                         myModal.show()
                     }
                 })
@@ -144,6 +147,8 @@
                 }).fail(function(data){
                     if (data.status == 401) {
                         var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
+                        $('.t1').text("@lang('Disliked This Video') ?")
+                        $('.t2').text("@lang('Login To Make Your Dislike Count')")
                         myModal.show()
                     }
                 })
