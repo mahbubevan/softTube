@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
@@ -51,25 +52,28 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function subscribes()
-    {
-        return $this->hasMany(Subscribe::class);
-    }
-
     public function likedVideos()
     {
-        return $this->belongsToMany(Video::class,'likes');
+        return $this->belongsToMany(Video::class, 'likes');
     }
 
     public function dislikedVideos()
     {
-        return $this->belongsToMany(Video::class,'dislikes');
+        return $this->belongsToMany(Video::class, 'dislikes');
     }
 
-    public function subscribedVideos()
+    public function subscribedTo()
     {
-        return $this->belongsToMany(Video::class,'subscribes');
+        return $this->belongsToMany(User::class, 'subscribes', 'subscribe_by', 'subscribe_to');
     }
 
+    public function subscribedBy()
+    {
+        return $this->belongsToMany(User::class, 'subscribes', 'subscribe_to', 'subscribe_by');
+    }
 
+    public function isSubscribedBy()
+    {
+        return $this->subscribedBy()->where('subscribe_by', Auth::id())->exists();
+    }
 }

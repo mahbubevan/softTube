@@ -17,6 +17,11 @@ class Video extends Model
         'tags' => 'array'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -37,24 +42,18 @@ class Video extends Model
         return $this->hasMany(Dislike::class);
     }
 
-    public function subscribes()
-    {
-        return $this->hasMany(Subscribe::class);
-    }
-
     public function isLikedByUser()
     {
-        return $this->likes()->where('user_id',Auth::id())->exists();
+        return $this->likes()->where('user_id', Auth::id())->exists();
     }
 
     public function isDislikedByUser()
     {
-        return $this->dislikes()->where('user_id',Auth::id())->exists();
+        return $this->dislikes()->where('user_id', Auth::id())->exists();
     }
 
     public function isSubscribedByUser()
     {
-        return $this->subscribes()->where('user_id',Auth::id())->exists();
+        return $this->subscribes()->where('user_id', Auth::id())->exists();
     }
-
 }

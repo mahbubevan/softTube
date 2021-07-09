@@ -24,7 +24,10 @@
                                     <span id="likeCount">{{$video->likes_count}}</span>
                                     <span data-toggle="tooltip" title="@lang('Like')" id="like" class="link @if($video->isLikedByUser()) text-indigo-500 hover:text-indigo-700 @endif"><i class="las la-thumbs-up"></i></span>
                                 </div>
-                                <div class="dislike h3"> <span id="dislikeCount">{{$video->dislikes_count}}</span> <span data-toggle="tooltip" title="@lang('Dislike')" class="link @if($video->isDislikedByUser()) text-indigo-500 hover:text-indigo-700 @endif" id="dislike"><i class="las la-thumbs-down"></i></span> </div>
+                                <div class="dislike h3">
+                                    <span id="dislikeCount">{{$video->dislikes_count}}</span>
+                                    <span data-toggle="tooltip" title="@lang('Dislike')" class="link @if($video->isDislikedByUser()) text-indigo-500 hover:text-indigo-700 @endif" id="dislike"><i class="las la-thumbs-down"></i></span>
+                                </div>
                                 <div class="share h3"> <span></span> <span data-toggle="tooltip" title="@lang('Share')" class="link" id="share"><i class="las la-share-alt-square"></i></span> </div>
                                 <div class="watchlater h3"> <span></span> <span data-toggle="tooltip" title="@lang('Add To Watch Later')" class="link" id="watchlater"><i class="las la-folder-plus"></i></span> </div>
                                 <div class="report h3"> <span></span> <span data-toggle="tooltip" title="@lang('Report')" class="link" id="report"><i class="las la-flag"></i></span> </div>
@@ -32,12 +35,18 @@
                         </div>
                     </div>
                 </div>
+                <hr>
                 <div class="row mt-3 video-description">
                     <div class="col-md-9">
-                        <span class="h2"> @lang('Description') </span>
+                        <span class="h3 d-block"> {{__($video->user->username)}} </span>
+                        <span class="h6 d-block"> <span id="subscriptionCount"> {{__($video->user->subscribedBy()->count())}} </span> @lang('subscribers') </span>
                     </div>
-                    <div class="col-md-3">
-                        <a href="#0" class="btn bg-pink-800 text-white"> @lang('Subscribe') </a>
+                    <div class="col-md-3 subs-dcsn">
+                        @if($video->user->isSubscribedBy())
+                            <button id="unsubscribe" class="btn bg-gray-400 text-white"> @lang('Subscribed') </button>
+                        @else
+                            <button id="subscribe" class="btn bg-pink-800 text-white"> @lang('Subscribe') </button>
+                        @endif
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -113,7 +122,7 @@
                         var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
                         $('.t1').text("@lang('Liked This Video') ?")
                         $('.t2').text("@lang('Login To Make Your Like Count')")
-                        
+
                         myModal.show()
                     }
                 })
@@ -153,6 +162,63 @@
                     }
                 })
             })
+
+            $(document).on("click","#subscribe",function(){
+                var url = "{{route('user.subscribe')}}"
+                var id = "{{$video->id}}"
+
+                $.ajax({
+                    url,
+                    method:"POST",
+                    data:{
+                        _token:"{{csrf_token()}}",
+                        id
+                    }
+                }).done(function(data){
+                    if (data.status) {
+                       $(".subs-dcsn") .html(`<button id="unsubscribe" class="btn bg-gray-400 text-white"> @lang('Subscribed') </button>`)
+                       $("#subscriptionCount").text(data.subscribeCount)
+                    }
+
+                }).fail(function(data){
+                    console.log(data);
+                    if (data.status == 401) {
+                        var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
+                        $('.t1').text("@lang('Want To Subscribe This Video') ?")
+                        $('.t2').text("@lang('Login To Subscribe')")
+                        myModal.show()
+                    }
+                })
+            })
+
+            $(document).on("click","#unsubscribe",function(){
+                var url = "{{route('user.subscribe')}}"
+                var id = "{{$video->id}}"
+
+                $.ajax({
+                    url,
+                    method:"POST",
+                    data:{
+                        _token:"{{csrf_token()}}",
+                        id
+                    }
+                }).done(function(data){
+                    if (data.status) {
+                       $(".subs-dcsn") .html(`<button id="subscribe" class="btn bg-pink-800 text-white"> @lang('Subscribe') </button>`)
+                       $("#subscriptionCount").text(data.subscribeCount)
+                    }
+
+                }).fail(function(data){
+                    if (data.status == 401) {
+                        var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
+                        $('.t1').text("@lang('Want To Subscribe This Video') ?")
+                        $('.t2').text("@lang('Login To Subscribe')")
+                        myModal.show()
+                    }
+                })
+            })
+
+
         })
     </script>
 @endpush
