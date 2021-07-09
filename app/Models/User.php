@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->hasMany(EmailLog::class, 'user_id');
     }
 
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);

@@ -19,7 +19,7 @@ class UploadController extends Controller
 
     public function checkExtSize(Request $request)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::with('videos')->withSum('videos', 'size')->where('id', Auth::id())->first();
         $userPlan = Plan::where('stripe_price', $user->subscriptions[0]->stripe_price)->first();
         // Checking File Format
         try {
@@ -40,21 +40,27 @@ class UploadController extends Controller
 
         if ($userPlan->storage_unit == Plan::MB) {
             $sizeInMb = $this->formatBytes($request->size, "MB");
-            if ($sizeInMb > $userPlan->storage) {
+            $userUsedMb = $this->formatBytes($user->videos_sum_size, "MB");
+            $totalUsedMb = $sizeInMb + $userUsedMb;
+            if ($totalUsedMb > $userPlan->storage) {
                 return \response()->json([
                     'error' => "Your total upload max size - " . \number_format($userPlan->storage) . "MB"
                 ], 400);
             }
         } elseif ($userPlan->storage_unit == Plan::GB) {
             $sizeInMb = $this->formatBytes($request->size, "GB");
-            if ($sizeInMb > $userPlan->storage) {
+            $userUsedMb = $this->formatBytes($user->videos_sum_size, "GB");
+            $totalUsedMb = $sizeInMb + $userUsedMb;
+            if ($totalUsedMb > $userPlan->storage) {
                 return \response()->json([
                     'error' => "Your total upload max size - " . \number_format($userPlan->storage) . "GB"
                 ], 400);
             }
         } elseif ($userPlan->storage_unit == Plan::TB) {
             $sizeInMb = $this->formatBytes($request->size, "TB");
-            if ($sizeInMb > $userPlan->storage) {
+            $userUsedMb = $this->formatBytes($user->videos_sum_size, "TB");
+            $totalUsedMb = $sizeInMb + $userUsedMb;
+            if ($totalUsedMb > $userPlan->storage) {
                 return \response()->json([
                     'error' => "Your total upload max size - " . \number_format($userPlan->storage) . "TB"
                 ], 400);
@@ -169,8 +175,8 @@ class UploadController extends Controller
 
     public function videos()
     {
-        $videos = Video::where('user_id',Auth::id())->orderBy('id','desc')->paginate(20);
+        $videos = Video::where('user_id', Auth::id())->orderBy('id', 'desc')->paginate(20);
 
-        return view('user.video.list',compact('videos'));
+        return view('user.video.list', compact('videos'));
     }
 }
