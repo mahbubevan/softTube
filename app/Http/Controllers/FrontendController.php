@@ -13,8 +13,9 @@ class FrontendController extends Controller
     {
         if (Auth::user()) {
             $videos = Video::where('user_id', '!=', Auth::id())->where('status', Video::ACTIVE)->take(10)->get()->groupBy('category.name');
+        } else {
+            $videos = Video::where('status', Video::ACTIVE)->take(10)->get()->groupBy('category.name');
         }
-        $videos = Video::where('status', Video::ACTIVE)->take(10)->get()->groupBy('category.name');
 
         return view('frontend.main', compact('videos'));
     }

@@ -203,7 +203,7 @@
                         id
                     }
                 }).done(function(data){
-                    if (data.status) {
+                    if (!data.status) {
                        $(".subs-dcsn") .html(`<button id="subscribe" class="btn bg-pink-800 text-white"> @lang('Subscribe') </button>`)
                        $("#subscriptionCount").text(data.subscribeCount)
                     }
