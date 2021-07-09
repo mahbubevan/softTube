@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->integer('video_id')->unsigned();
+            $table->text('comment');
             $table->timestamps();
         });
     }
