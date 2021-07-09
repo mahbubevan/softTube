@@ -23,7 +23,7 @@ class FrontendController extends Controller
 
     public function watch(Request $request)
     {
-        $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes')->with('user')->first();
+        $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes','comments')->with('user','comments.user')->first();
 
         return view('frontend.watch', compact('video'));
     }

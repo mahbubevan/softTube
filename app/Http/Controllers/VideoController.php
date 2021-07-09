@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Http\Request;
@@ -71,8 +72,20 @@ class VideoController extends Controller
             'dislikeCount' => $dislikeCount
         ], 200);
     }
-    public function comment()
+    public function comment(Request $request)
     {
+        $this->validate($request,[
+            'videoId' => 'required',
+            'comment' => 'required|max:250'
+        ]);
+
+        $comment = new Comment();
+        $comment->user_id = Auth::id();
+        $comment->video_id = $request->videoId;
+        $comment->comment = $request->comment;
+        $comment->save();
+
+        return back()->with('success','Your comment has been counted');
     }
 
     public function subscribe(Request $request)

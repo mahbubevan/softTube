@@ -51,8 +51,29 @@
                 </div>
                 <div class="row mt-3">
                     <div class="video-comments">
-                        <span class="h3">0 @lang('Comments') </span>
-                        <div class="comments"></div>
+                        <span class="h3">{{$video->comments_count}} @lang('Comments') </span>
+                        <div class="new-comment-input mb-5">
+                            <form action="{{route('user.comment')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="videoId" value="{{$video->id}}">
+                                <input type="text" name="comment" class="form-control border-top-0 border-start-0 border-end-0 border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent">
+                                <button type="submit" class="btn btn-md bg-purple-600 mt-3 text-white float-end"> @lang('Comment') </button>
+                            </form>
+                        </div>
+                        <div class="comments mt-5">
+                            @forelse ($video->comments as $item)
+                                <div class="comment-name">
+                                    {{__($item->user->name)}} - {{$item->created_at->diffforhumans()}}
+                                </div>
+                                <div class="user-comment">
+                                    {{__($item->comment)}}
+                                </div>
+                            @empty
+                                <div class="no-comment">
+                                    @lang('No Comment')
+                                </div>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
             </div>
