@@ -6,6 +6,7 @@ use App\Models\Language;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 
 class FrontendController extends Controller
@@ -23,7 +24,7 @@ class FrontendController extends Controller
 
     public function watch(Request $request)
     {
-        $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes','comments')->with('user','comments.user')->first();
+        $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes', 'comments')->with('user', 'comments.user')->first();
 
         return view('frontend.watch', compact('video'));
     }
@@ -38,5 +39,11 @@ class FrontendController extends Controller
         }
         session()->put('lang', $lang);
         return redirect()->back();
+    }
+
+    //video views count
+    public function videoViewCount(Request $request)
+    {
+        return $request->all();
     }
 }
