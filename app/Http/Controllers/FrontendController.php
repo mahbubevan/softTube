@@ -15,9 +15,9 @@ class FrontendController extends Controller
     public function main()
     {
         if (Auth::user()) {
-            $videos = Video::where('user_id', '!=', Auth::id())->where('status', Video::ACTIVE)->take(10)->get()->groupBy('category.name');
+            $videos = Video::where('user_id', '!=', Auth::id())->where('status', Video::ACTIVE)->withCount('views')->take(10)->get()->groupBy('category.name');
         } else {
-            $videos = Video::where('status', Video::ACTIVE)->take(10)->get()->groupBy('category.name');
+            $videos = Video::where('status', Video::ACTIVE)->withCount('views')->take(10)->get()->groupBy('category.name');
         }
 
         return view('frontend.main', compact('videos'));
@@ -25,13 +25,13 @@ class FrontendController extends Controller
 
     public function watch(Request $request)
     {
-        $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes', 'comments','views')->with('user', 'comments.user')->first();
+        $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes', 'comments', 'views')->with('user', 'comments.user')->first();
 
         if (!Auth::user()) {
             $userIp = request()->ip();
-            $videoView = VideoView::where('ip',$userIp)->where('video_id',$video->id)->first();
-        }else{
-            $videoView = VideoView::where('user_id',Auth::id())->where('video_id',$video->id)->first();
+            $videoView = VideoView::where('ip', $userIp)->where('video_id', $video->id)->first();
+        } else {
+            $videoView = VideoView::where('user_id', Auth::id())->where('video_id', $video->id)->first();
             $userIp = null;
         }
 
@@ -41,7 +41,7 @@ class FrontendController extends Controller
             $viewCounted = 1;
         }
 
-        return view('frontend.watch', compact('video','userIp','viewCounted'));
+        return view('frontend.watch', compact('video', 'userIp', 'viewCounted', 'videoView'));
     }
 
     public function changeLanguage(Request $request)
@@ -59,7 +59,7 @@ class FrontendController extends Controller
     //video views count
     public function videoViewCount(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'videoId' => 'required'
         ]);
 
@@ -67,9 +67,9 @@ class FrontendController extends Controller
 
         $userIp = request()->ip();
         if (!Auth::user()) {
-            $videoView = VideoView::where('ip',$userIp)->where('video_id',$video->id)->first();
-        }else{
-            $videoView = VideoView::where('user_id',Auth::id())->where('video_id',$video->id)->first();
+            $videoView = VideoView::where('ip', $userIp)->where('video_id', $video->id)->first();
+        } else {
+            $videoView = VideoView::where('user_id', Auth::id())->where('video_id', $video->id)->first();
         }
 
         if ($videoView) {
@@ -79,7 +79,7 @@ class FrontendController extends Controller
             return response()->json([
                 "message" => "View Counted",
                 "status" => 2
-            ],200);
+            ], 200);
         }
 
         $videoView = new VideoView();
@@ -97,7 +97,6 @@ class FrontendController extends Controller
             "status" => 1
         ];
 
-        return response()->json($data,200);
-
+        return response()->json($data, 200);
     }
 }

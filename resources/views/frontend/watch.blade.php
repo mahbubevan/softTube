@@ -7,6 +7,7 @@
                     <div class="col-md-12 video-watch">
                         <video width="100%" muted height="600" autoplay controls>
                             <source src="{{asset($video->path)}}" type="video/mp4">
+                            <source src="https://youtu.be/clDe6CJz9NA" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -246,13 +247,13 @@
     <script>
         "use strict"
         var flag = "{{$viewCounted}}"
-        if (flag==1) {
-            var url = "{{route('user.video.view.count')}}"
+        // if (flag==1) {
+            var url = "{{route('video.view.count')}}"
             var watchDuration = 30
 
             const video = document.querySelector('video');
             video.ontimeupdate = (event) => {
-                var duration = video.duration % 60;
+                var duration = video.duration;
                 var currentTime = video.currentTime;
                 var percentage = Math.round((currentTime / duration) * 100);
                 
@@ -266,6 +267,7 @@
                         duration:percentage
                     }
                     }).done(function(data){
+                        console.log(data);
                         if (data.status == 1 ) {
                             $(".viewCount").text(data.count)
                         }
@@ -276,6 +278,6 @@
                 }
 
             };
-        }       
+        // }
     </script>
 @endpush

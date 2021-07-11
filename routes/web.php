@@ -226,12 +226,10 @@ Route::prefix('user')->name('user.')->group(function () {
             });
 
             // Like, DisLike, Comment, Channel Subscription, Report
-            Route::post('/video-like',[VideoController::class,'like'])->name('like');
-            Route::post('/video-dislike',[VideoController::class,'dislike'])->name('dislike');
-            Route::post('/video-subscribe',[VideoController::class,'subscribe'])->name('subscribe');
-            Route::post('/video-comment',[VideoController::class,'comment'])->name('comment');
-            Route::post('/video-view',[FrontendController::class,'videoViewCount'])->name('video.view.count');
-
+            Route::post('/video-like', [VideoController::class, 'like'])->name('like');
+            Route::post('/video-dislike', [VideoController::class, 'dislike'])->name('dislike');
+            Route::post('/video-subscribe', [VideoController::class, 'subscribe'])->name('subscribe');
+            Route::post('/video-comment', [VideoController::class, 'comment'])->name('comment');
         });
     });
 });
@@ -243,7 +241,7 @@ Route::prefix('user')->name('user.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [FrontendController::class,'main'])->name('main');
-Route::get('/watch', [FrontendController::class,'watch'])->name('watch');
-
+Route::get('/', [FrontendController::class, 'main'])->name('main');
+Route::get('/watch', [FrontendController::class, 'watch'])->name('watch');
+Route::post('/video-view', [FrontendController::class, 'videoViewCount'])->name('video.view.count');
 Route::get('/change/language', [FrontendController::class, 'changeLanguage'])->name('change.language');
