@@ -16,9 +16,9 @@ class CreateVideoViewsTable extends Migration
         Schema::create('video_views', function (Blueprint $table) {
             $table->id();
             $table->integer('video_id')->unsigned();
-            $table->integer('user_id')->unsigned();
-            $table->string('ip');
-            $table->integer('duration')->unsigned()->comment('Duration in seconds');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->string('ip')->nullable();
+            $table->integer('duration')->unsigned()->comment('Percentage of total duration');
             $table->timestamps();
         });
     }

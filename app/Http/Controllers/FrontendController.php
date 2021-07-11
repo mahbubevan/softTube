@@ -25,7 +25,7 @@ class FrontendController extends Controller
 
     public function watch(Request $request)
     {
-        $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes', 'comments')->with('user', 'comments.user')->first();
+        $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes', 'comments','views')->with('user', 'comments.user')->first();
 
         if (!Auth::user()) {
             $userIp = request()->ip();
@@ -59,6 +59,45 @@ class FrontendController extends Controller
     //video views count
     public function videoViewCount(Request $request)
     {
-        return $request->all();
+        $this->validate($request,[
+            'videoId' => 'required'
+        ]);
+
+        $video = Video::where('id', $request->videoId)->where('status', Video::ACTIVE)->first();
+
+        $userIp = request()->ip();
+        if (!Auth::user()) {
+            $videoView = VideoView::where('ip',$userIp)->where('video_id',$video->id)->first();
+        }else{
+            $videoView = VideoView::where('user_id',Auth::id())->where('video_id',$video->id)->first();
+        }
+
+        if ($videoView) {
+            $videoView->duration = $request->duration;
+            $videoView->update();
+
+            return response()->json([
+                "message" => "View Counted",
+                "status" => 2
+            ],200);
+        }
+
+        $videoView = new VideoView();
+        $videoView->video_id = $video->id;
+        $videoView->user_id = Auth::id();
+        $videoView->ip = $userIp;
+        $videoView->duration = $request->duration;
+        $videoView->save();
+
+        $video = Video::where('id', $request->videoId)->where('status', Video::ACTIVE)->withCount('views')->first();
+
+        $data = [
+            "viewId" => $videoView->id,
+            "count" => $video->views_count,
+            "status" => 1
+        ];
+
+        return response()->json($data,200);
+
     }
 }

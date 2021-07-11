@@ -56,4 +56,9 @@ class Video extends Model
     {
         return $this->subscribes()->where('user_id', Auth::id())->exists();
     }
+
+    public function views()
+    {
+        return $this->hasMany(VideoView::class);
+    }
 }

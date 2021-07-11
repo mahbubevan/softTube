@@ -15,7 +15,7 @@
                         <span class="h3 d-block"> {{__(@$video->title)}} </span>
                         <div class="d-flex justify-content-between">
                             <div>
-                                <span> {{@$video->watched}} @lang('views') </span>
+                                <span class="viewCount"> {{@$video->views_count}} </span> @lang('views')
                                 |
                                 <span> @lang('Uploaded ') {{$video->created_at->diffforhumans()}} </span>
                             </div>
@@ -255,17 +255,20 @@
                 var duration = video.duration % 60;
                 var currentTime = video.currentTime;
                 var percentage = Math.round((currentTime / duration) * 100);
-                console.log(percentage);
+                
                 if (percentage > watchDuration) {
                     $.ajax({
                     url,
                     method:"POST",
                     data:{
                         _token:"{{csrf_token()}}",
-                        videoId:"{{$video->id}}"
+                        videoId:"{{$video->id}}",
+                        duration:percentage
                     }
                     }).done(function(data){
-                        console.log(data);
+                        if (data.status == 1 ) {
+                            $(".viewCount").text(data.count)
+                        }
                     }).fail(function(data){
                         console.log(data);
                     })
