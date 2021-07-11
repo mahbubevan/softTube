@@ -112,6 +112,7 @@
 @endpush
 @push('script')
     <script>
+        "use strict"
         $(function(){
             $("#like").on("click",function(){
                 var url = "{{route('user.like')}}"
@@ -239,7 +240,39 @@
                 })
             })
 
-
         })
+    </script>
+
+    <script>
+        "use strict"
+        var flag = "{{$viewCounted}}"
+        if (flag==1) {
+            var url = "{{route('user.video.view.count')}}"
+            var watchDuration = 30
+
+            const video = document.querySelector('video');
+            video.ontimeupdate = (event) => {
+                var duration = video.duration % 60;
+                var currentTime = video.currentTime;
+                var percentage = Math.round((currentTime / duration) * 100);
+                console.log(percentage);
+                if (percentage > watchDuration) {
+                    $.ajax({
+                    url,
+                    method:"POST",
+                    data:{
+                        _token:"{{csrf_token()}}",
+                        videoId:"{{$video->id}}"
+                    }
+                    }).done(function(data){
+                        console.log(data);
+                    }).fail(function(data){
+                        console.log(data);
+                    })
+
+                }
+
+            };
+        }       
     </script>
 @endpush

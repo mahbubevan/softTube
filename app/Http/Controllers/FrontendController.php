@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Language;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\VideoView;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,21 @@ class FrontendController extends Controller
     {
         $video = Video::where('id', $request->v)->where('status', Video::ACTIVE)->withCount('likes', 'dislikes', 'comments')->with('user', 'comments.user')->first();
 
-        return view('frontend.watch', compact('video'));
+        if (!Auth::user()) {
+            $userIp = request()->ip();
+            $videoView = VideoView::where('ip',$userIp)->where('video_id',$video->id)->first();
+        }else{
+            $videoView = VideoView::where('user_id',Auth::id())->where('video_id',$video->id)->first();
+            $userIp = null;
+        }
+
+        $viewCounted = 0;
+
+        if (!$videoView) {
+            $viewCounted = 1;
+        }
+
+        return view('frontend.watch', compact('video','userIp','viewCounted'));
     }
 
     public function changeLanguage(Request $request)

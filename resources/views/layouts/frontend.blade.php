@@ -36,6 +36,15 @@
     </div>
 </body>
 
+<noscript>
+  <style type="text/css">
+      .container {display:none;}
+  </style>
+  <div class="noscriptmsg">
+   @lang("You don't have javascript enabled.  Good luck with that.")
+  </div>
+</noscript>
+
 <script src="{{asset('js/jquery.min.js')}}"></script>
 
 <script src="{{ asset('js/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

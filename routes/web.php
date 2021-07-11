@@ -230,6 +230,7 @@ Route::prefix('user')->name('user.')->group(function () {
             Route::post('/video-dislike',[VideoController::class,'dislike'])->name('dislike');
             Route::post('/video-subscribe',[VideoController::class,'subscribe'])->name('subscribe');
             Route::post('/video-comment',[VideoController::class,'comment'])->name('comment');
+            Route::post('/video-view',[FrontendController::class,'videoViewCount'])->name('video.view.count');
 
         });
     });
