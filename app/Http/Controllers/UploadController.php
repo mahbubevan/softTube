@@ -175,8 +175,9 @@ class UploadController extends Controller
 
     public function videos()
     {
-        $videos = Video::where('user_id', Auth::id())->orderBy('id', 'desc')->paginate(20);
-
-        return view('user.video.list', compact('videos'));
+        $videos = Video::where('user_id', Auth::id())->withCount('likes','dislikes','views')->orderBy('id', 'desc')->paginate(20);
+        $subscribeCount = User::where('id',Auth::id())->first()->subscribedBy()->count();
+        
+        return view('user.video.list', compact('videos','subscribeCount'));
     }
 }

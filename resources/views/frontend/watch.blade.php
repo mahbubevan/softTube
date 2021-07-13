@@ -5,9 +5,8 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-12 video-watch">
-                        <video width="100%" muted height="600" autoplay controls>
+                        <video id="myVideo" width="100%" muted height="600" autoplay controls>
                             <source src="{{asset($video->path)}}" type="video/mp4">
-                            <source src="https://youtu.be/clDe6CJz9NA" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -240,6 +239,9 @@
                     }
                 })
             })
+
+            var x = document.getElementById("myVideo");
+            x.currentTime = 10;
 
         })
     </script>

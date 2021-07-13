@@ -42,6 +42,7 @@ class Video extends Model
         return $this->hasMany(Dislike::class);
     }
 
+
     public function isLikedByUser()
     {
         return $this->likes()->where('user_id', Auth::id())->exists();
@@ -50,11 +51,6 @@ class Video extends Model
     public function isDislikedByUser()
     {
         return $this->dislikes()->where('user_id', Auth::id())->exists();
-    }
-
-    public function isSubscribedByUser()
-    {
-        return $this->subscribes()->where('user_id', Auth::id())->exists();
     }
 
     public function views()

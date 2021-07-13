@@ -30,6 +30,52 @@
 </head>
 <body>
     <div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="{{url('/')}}">{{__($setting->appname)}}</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              @auth
+              <li class="nav-item">
+                <a href="{{route('user.index')}}" class="nav-link"> @lang('Dashboard') </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{__(auth()->user()->name)}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{{route('user.deposit.set.amount')}}">{{__('Deposit Now')}}</a></li>
+                  <li><a class="dropdown-item" href="{{route('user.deposit.history')}}">{{__('Deposit History')}}</a></li>
+                  <li><a class="dropdown-item" href="{{route('user.deposit.selector')}}">{{__('Update Your Payment Info')}}</a></li>
+                  <li><a class="dropdown-item" href="{{route('user.upload')}}">{{__('Upload')}}</a></li>
+                  <li><a class="dropdown-item" href="{{route('user.videos')}}">{{__('Videos')}}</a></li>
+                  <li><a class="dropdown-item" href="{{route('user.plan')}}">{{__('Plans')}}</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <form action="{{route('logout')}}" method="post">
+                      @csrf
+                      <li>
+                        <button type="submit" class="dropdown-item"> @lang('Logout') </button>
+                      </li>
+                    </form>
+                  </li>
+                </ul>
+              </li>
+              @else 
+                <li class="nav-item">
+                  <a href="{{route('login')}}" class="nav-link"> {{__("Login")}} </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('register')}}" class="nav-link"> {{__("Register")}} </a>
+                </li>
+              @endauth
+            </ul>
+          </div>
+        </div>
+    </nav>
         <main class="py-4">
             @yield('content')
         </main>

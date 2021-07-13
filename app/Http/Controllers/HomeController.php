@@ -37,7 +37,9 @@ class HomeController extends Controller
 
         $videos = Video::where('user_id', Auth::id())->get();
 
-        return view('home', compact('methods', 'videos'));
+        $subscribeCount = $user->subscribedBy()->count();
+
+        return view('home', compact('methods', 'videos','subscribeCount'));
     }
 
     public function selector()

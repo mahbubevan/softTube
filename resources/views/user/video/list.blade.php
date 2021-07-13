@@ -9,9 +9,9 @@
                         <tr>
                             <th scope="col"> @lang('Title') </th>
                             <th scope="col"> @lang('Size') </th>
-                            <th scope="col"> @lang('Watched') </th>
-                            <th scope="col"> @lang('Subscribed') </th>
+                            <th scope="col"> @lang('Views') </th>
                             <th scope="col"> @lang('Liked') </th>
+                            <th scope="col"> @lang('Disliked') </th>
                             <th scope="col"> @lang('Action') </th>
                           </tr>
                     </thead>
@@ -22,9 +22,13 @@
                               <td>
                                   {{number_format($item->size)}} @lang('Bytes')
                               </td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
+                              <td> {{$item->views_count}} </td>
+                              <td>
+                                  {{$item->likes_count}}
+                              </td>
+                              <td>
+                                {{$item->dislikes_count}}
+                              </td>
                               <td>
                                   <a href="#0" class="btn btn-sm bg-indigo-500 hover:bg-indigo-700 text-white">
                                     <i class="las la-pen"></i>

@@ -12,6 +12,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-indigo-500 text-white">
+                    <h4 class="card-title"> @lang('Total Subscribers') </h4>
+                </div>
+                <div class="card-body">
+                    {{$subscribeCount}}
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row justify-content-center mt-5 mb-5">
         @forelse ($videos as $item)
