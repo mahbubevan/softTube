@@ -16,7 +16,7 @@
                                             <form action="{{route('watch')}}" method="get">
                                                 <button type="submit">
                                                     <input type="hidden" name="v" value="{{$val->id}}">
-                                                    <video loop muted width="100%" height="300" controls>
+                                                    <video id="myVideo" muted width="100%" height="300">
                                                         <source src="{{asset($val->path)}}" type="video/mp4">
                                                     </video>
                                                 </button>
@@ -50,6 +50,12 @@
             $(".video").on({
                 mouseenter: function () {
                     $('video', this).get(0).play();
+                    var video = document.getElementById("myVideo")
+                    var currentTime = video.currentTime
+                    setInterval(function(){
+                        video.currentTime = 0
+                    },2000)
+                    
                 },
                 mouseleave: function () {
                     $('video', this).get(0).pause();
