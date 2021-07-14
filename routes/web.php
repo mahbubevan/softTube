@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdvertiseController;
 use App\Http\Controllers\Admin\Auth\ForgotPasswordController as AdminForgotPasswordController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\Auth\ResetPasswordController as AdminResetPasswordController;
@@ -144,6 +145,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::post('update', [CategoryController::class, 'update'])->name('update');
             });
         });
+
+        // Advertise Manager 
+        Route::prefix('advertise')->name('advertise.')->group(function(){
+            Route::get('lists',[AdvertiseController::class,'lists'])->name('lists');
+            Route::get('create',[AdvertiseController::class,'create'])->name('create');
+            Route::post('store',[AdvertiseController::class,'store'])->name('store');
+            Route::get('show/{advertise}',[AdvertiseController::class,'show'])->name('show');
+            Route::get('edit/{advertise}',[AdvertiseController::class,'edit'])->name('edit');
+            Route::post('update/{advertise}',[AdvertiseController::class,'update'])->name('update');
+            Route::post('destroy',[AdvertiseController::class,'destroy'])->name('destroy');
+        });
+
+
     });
 });
 

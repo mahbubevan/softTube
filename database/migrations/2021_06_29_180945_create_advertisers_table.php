@@ -15,6 +15,7 @@ class CreateAdvertisersTable extends Migration
     {
         Schema::create('advertisers', function (Blueprint $table) {
             $table->id();
+            $table->string('ad_name');
             $table->longText('advertiser_info')->default("{}");
             $table->string('add_size',191)->default("300x300");
             $table->string('add_type',191)->nullable();

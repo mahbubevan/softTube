@@ -98,6 +98,16 @@
           </li>
 
           <li class="nav-item">
+            <a href="{{route('admin.advertise.lists')}}" class="nav-link @if(request()->routeIs('admin.advertise.*')) active @endif">
+              <i class="nav-icon lab la-adversal"></i>
+              <p>
+                {{__('Advertise')}}
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="{{route('admin.transaction.list')}}" class="nav-link @if(request()->routeIs('admin.transaction.list')) active @endif">
               <i class="nav-icon las la-exchange-alt"></i>
               <p>
