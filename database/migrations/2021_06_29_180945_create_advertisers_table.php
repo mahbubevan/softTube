@@ -22,6 +22,8 @@ class CreateAdvertisersTable extends Migration
             $table->string('image')->nullable();
             $table->string('redirect_url')->nullable();
             $table->string('script')->nullable();
+            $table->string('video')->nullable();
+            $table->string('video_link')->nullable();
             $table->integer('impression')->default(0);
             $table->integer('click')->default(0);
             $table->boolean('status')->default(0);

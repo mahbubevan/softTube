@@ -55,6 +55,10 @@ if (!function_exists('path')) {
             'size' => '16x16'
         ];
 
+        $path['advertise'] = [
+            'path' => 'videos/advertise'
+        ];
+
         $path['video'] = [
             'tempPath' => 'videos' . "/" . $username . "/temp",
             'mainPath' => 'videos' . "/" . $username . "/main",

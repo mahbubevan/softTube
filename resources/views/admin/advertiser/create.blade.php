@@ -9,7 +9,7 @@
             </div>
             <div class="card-body">
                 <div class="row addedField">
-                                   
+
                 </div>
             </div>
             <div class="card-footer">
@@ -30,12 +30,20 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="addSize"> @lang('Ad Size') <span class="text-pink-700">*</span> </label>
-                        <input type="text" id="addSize" name="add_size" class="form-control" placeholder="@lang('Ad Size')">
+                        <select name="add_size" id="addSize" class="select2 form-control">
+                            <option value="320x250"> @lang('320x250') </option>
+                            <option value="728x90"> @lang('728x90') </option>
+                            <option value="300x600"> @lang('300x600') </option>
+                        </select>
                     </div>
-    
+
                     <div class="form-group col-md-6">
                         <label for="addType"> @lang('Ad Type') <span class="text-pink-700">*</span> </label>
-                        <input type="text" id="addType" name="add_type" class="form-control" placeholder="@lang('Ad Size')">
+                        <select name="add_type" id="addType" class="select2 form-control">
+                            <option value="{{\App\Models\Advertiser::BANNER}}"> @lang('Banner') </option>
+                            <option value="{{\App\Models\Advertiser::SCRIPT}}"> @lang('Script') </option>
+                            <option value="{{\App\Models\Advertiser::VIDEO}}"> @lang('Video') </option>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="image"> @lang('Image') <span class="text-pink-700">*</span> </label>
@@ -48,6 +56,14 @@
                     <div class="form-group col-md-6">
                         <label for="redirectUrl"> @lang('Redirect Url') <span class="text-pink-700">*</span> </label>
                         <input type="text" id="redirectUrl" name="redirectUrl" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="video_link"> @lang('Video Url') <span class="text-pink-700">*</span> </label>
+                        <input type="text" id="video_link" name="video_link" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="video"> @lang('Video') <span class="text-pink-700">*</span> </label>
+                        <input type="file" id="video" name="video" class="form-control" />
                     </div>
 
                 </div>
@@ -72,14 +88,19 @@
                     <div class="form-group col-md-3">
                         <label for="key"> @lang('Key') <span class="text-pink-700">*</span> </label>
                         <input type="text" id="key${i}" name="key[]" class="form-control" placeholder="@lang('Full Name')">
-                    </div>     
+                    </div>
                     <div class="form-group col-md-3">
                         <label for="value"> @lang('Value') <span class="text-pink-700">*</span> </label>
                         <input type="text" id="value${i}" name="value[]" class="form-control" placeholder="@lang('John Doe')">
-                    </div>     
+                    </div>
                 `)
             })
-        
+
+        })
+    </script>
+    <script>
+        $(function(){
+            $(".select2").select2()
         })
     </script>
 @endpush
